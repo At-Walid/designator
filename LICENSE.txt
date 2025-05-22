@@ -1,0 +1,7 @@
+Copyright (c) 2025 University of Luxembourg.
+
+This program is made available to the reviewers of the paper "DESIGNATOR: : a Tool for Automated GAN-based Testing of DNNs in Martian Environments" authored by: 
+-   Mohammed Oualid Attaoui - mohammed.attaoui@uni.lu
+-   Fabrizio Pastore - fabrizio.pastore@uni.lu
+
+The program can be used by the above-mentioned reviewers to replicate experimental results. Any other use is forbidden.

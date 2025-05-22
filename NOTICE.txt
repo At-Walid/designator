@@ -1,0 +1,12 @@
+DESIGNATOR is © 2023-2025 University of Luxembourg
+
+Authors: 
+-   Mohammed Oualid Attaoui - mohammed.attaoui@uni.lu
+-   Fabrizio Pastore - fabrizio.pastore@uni.lu
+
+All the rights are retained by the authors. The program is made available to the reviewers of the paper "DESIGNATOR: : a Tool for Automated GAN-based Testing of DNNs in Martian Environments" to replicate empirical results.
+
+
+These scripts were developed using python
+
+

@@ -1,0 +1,34 @@
+{
+  "SettingsVersion": 1.2,
+  "SimMode": "ComputerVision",
+  "ViewMode": "Fpv",
+  "SegmentationSettings": {
+    "InitMethod": "",
+    "MeshNamingMethod": "",
+    "OverrideExisting": true
+  },
+    "Recording": {
+    "RecordInterval": 0.01,
+    "Cameras": [
+        { "CameraName": "0", "ImageType": 5},
+        { "CameraName": "0", "ImageType": 0}
+    ]
+  },
+  "CameraDefaults": {
+    "CaptureSettings": [
+      {
+        "ImageType": 5,
+        "Width": 512,
+        "Height": 512
+      },
+      {
+        "ImageType": 0,
+        "Width": 512,
+        "Height": 512
+      }
+
+    ]
+    }
+   }
+  
+  
