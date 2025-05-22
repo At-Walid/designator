@@ -1,5 +1,1 @@
-# Large files to exclude for first push
 MarsSim.zip
-app/MarsSim/
-app/checkpoints/
-app/dnn_model/
