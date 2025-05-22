@@ -100,6 +100,7 @@ pip install -r requirements.txt
 ```
 
 ### 3. Run the tool
+Download: https://doi.org/10.5281/zenodo.15491076
 unzip MarsSim.zip -d app/
 ```bash
 python app/run.py
