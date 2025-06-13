@@ -1,5 +1,32 @@
+import os
+import csv
+import time
+import math
+import random
 import shutil
-from ast import Break
+import subprocess
+import numpy as np
+from collections import OrderedDict
+from PIL import Image
+
+import cv2
+import psutil
+import matplotlib.pyplot as plt
+from torchvision import transforms, models
+from torchvision.utils import save_image
+from sklearn.metrics.pairwise import euclidean_distances
+
+import torch
+import torch.nn as nn
+import torch.nn.functional as F
+import torch.optim as optim
+from torch.utils.data import DataLoader
+from torchmetrics import Accuracy, ConfusionMatrix, JaccardIndex
+
+
+import airsim
+from airsim.types import Pose
+
 import pymoo
 from pymoo.algorithms.genetic_algorithm import GeneticAlgorithm
 from pymoo.docs import parse_doc_string
@@ -11,21 +38,6 @@ from pymoo.operators.selection.tournament_selection import TournamentSelection, 
 from pymoo.algorithms.so_genetic_algorithm import comp_by_cv_and_fitness, FitnessSurvival
 from pymoo.util.display import SingleObjectiveDisplay
 from pymoo.util.termination.default import SingleObjectiveDefaultTermination
-import setup_path
-import airsim
-import cv2
-from turtle import ycor
-import csv
-import numpy as np
-import os
-import time
-import tempfile
-import subprocess
-import param_car
-import math
-import random
-from airsim.types import Pose
-
 import pymoo.problems.multi
 from pymoo.util.dominator import Dominator
 
@@ -34,44 +46,6 @@ from pymoo.optimize import minimize
 from pymoo.algorithms.so_genetic_algorithm import GA as SGA
 from pymoo.visualization.scatter import Scatter
 
-import pix2pixHD
-import os
-
-import mxnet as mx
-from mxnet import image
-from mxnet.gluon.data.vision import transforms
-import gluoncv
-# using cpu
-ctx = mx.gpu(0)
-
-# ctx = mx.cpu()
-import torch
-
-
-
-import numpy as np
-import scipy.misc as m
-from torch.utils import data
-from torch.utils.data import DataLoader
-import torch.nn as nn
-import sklearn.metrics as skm
-import torch.optim as optim
-from tqdm import tqdm
-import matplotlib.pyplot as plt
-import torch.nn.functional as F
-import time
-from gluoncv.utils.viz import get_color_pallete
-import matplotlib.image as mpimg
-
-from torchvision.utils import save_image
-import torchvision
-from gluoncv.data.transforms.presets.segmentation import test_transform
-from mxnet import image as mx_img
-
-from PIL import Image
-
-import os
-from collections import OrderedDict
 from torch.autograd import Variable
 from pix2pixHD.options.test_options import TestOptions
 from pix2pixHD.data.data_loader import CreateDataLoader
@@ -80,16 +54,23 @@ import pix2pixHD.util.util as util
 from pix2pixHD.util.visualizer import Visualizer
 from pix2pixHD.util import html
 from pix2pixHD.data.base_dataset import BaseDataset, get_params, get_transform, normalize
-import torch
+
+from torchvision.utils import save_image
+import torchvision
+
 from torchvision import transforms
 from torchvision.models import resnet18
 from sklearn.metrics.pairwise import euclidean_distances
 from torchmetrics import Accuracy, ConfusionMatrix, JaccardIndex
 import pytorch_lightning as pl
 
+# from gluoncv import model_zoo
+# from gluoncv.utils.viz import get_color_pallete
+# from gluoncv.data.transforms.presets.segmentation import test_transform
 
-# print(os.environ['MXNET_CUDNN_AUTOTUNE_DEFAULT'])
-# os.environ['MXNET_CUDNN_AUTOTUNE_DEFAULT'] = '0'
+
+
+
 opt = TestOptions().parse(save=False)
 opt.nThreads = 2  # test code only supports nThreads = 1
 opt.batchSize = 1  # test code only supports batchSize = 1
@@ -406,7 +387,7 @@ class GaGan(object):
             reader = csv.DictReader(csvfile)
             rows = [row for row in reader]
         GAN = getGAN()
-        DNN = gluoncv.model_zoo.get_deeplab(dataset='citys', backbone='resnet50', pretrained=True, ctx=mx.gpu(0))
+        DNN = "" #gluoncv.model_zoo.get_deeplab(dataset='citys', backbone='resnet50', pretrained=True, ctx=mx.gpu(0))
 
         MyProblem = GanProblem(n_gen, pop_size, rows, self, DNN, GAN, numSet)
         print(MyProblem)
@@ -661,6 +642,7 @@ def predict_img(f):
 #                          abs(car_velocity.z_val) < velocity_threshold)
 
         return is_stationary
+
 class GanProblem(pymoo.problems.multi.Problem):
     def __init__(self, n_gen, pop_size, rows, myGaGan, DNN, GAN, numSet, **kwargs):
         self.problemDict = []
@@ -1052,21 +1034,21 @@ def generate_label(path):
     # Save the Cityscapes segmentation mask
     Image.fromarray(cityscapes_mask).save(path)
 
-def predict(model, path):
-    print(path)
-    t1 = time.time()
-    img = mx_img.imread(path)
-    t2 = time.time()
-    img = test_transform(img, ctx)
-    t3 = time.time()
-    output = model.predict(img)
-    t4 = time.time()
-    predict = mx.nd.squeeze(mx.nd.argmax(output, 1)).asnumpy()
-    t5 = time.time()
-    pred = get_color_pallete(predict, 'ade20k')
-    t6 = time.time()
-    print(t2-t1, t3-t2, t4-t3, t5-t4, t6-t5)
-    return pred
+# def predict(model, path):
+#     print(path)
+#     t1 = time.time()
+#     img = mx_img.imread(path)
+#     t2 = time.time()
+#     img = test_transform(img, ctx)
+#     t3 = time.time()
+#     output = model.predict(img)
+#     t4 = time.time()
+#     predict = mx.nd.squeeze(mx.nd.argmax(output, 1)).asnumpy()
+#     t5 = time.time()
+#     pred = get_color_pallete(predict, 'ade20k')
+#     t6 = time.time()
+#     print(t2-t1, t3-t2, t4-t3, t5-t4, t6-t5)
+#     return pred
 
 
 def _fast_hist(label_true, label_pred, n_class):

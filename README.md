@@ -32,100 +32,60 @@ This project provides a GUI-based testing framework for evaluating the robustnes
 
 ---
 
-## This package includes:
-- ✅ A pre-built Docker image of the DESIGNATE GUI tool
-- 🪐 The Unreal-based Mars simulator (`MarsSim/`)
-- ⚙️ A one-click script to launch the tool via Docker
-- 🧩 Instructions for manual setup (without Docker)
+## ⚠ Requirements
 
-## 💻 Requirements
+- **Windows OS**  
+  The tool requires Windows **because the simulator is built using Unreal Engine** and is currently only compiled as a Windows executable (`Mars.exe`).
 
-### For Docker-based use:
-- **Windows 10/11**
-- **[Docker Desktop](https://www.docker.com/products/docker-desktop)** installed
-- **GPU support (CUDA 11.3)** for running PyTorch
-
-### For Manual installation:
-- **Windows 10/11**
-- **Python 3.7** (strictly required)
-- **CUDA-compatible GPU**
-- **All dependencies listed in `requirements.txt`**
+- **GPU Support**  
+  The tool requires a **CUDA-compatible GPU** for inference using PyTorch and MXNet-based models.
 
 ---
 
-## 🚀 Option 1: Use Docker (Recommended)
+## 🧪 How to Use
 
-### ✅ Steps
+### 1. 📦 Download the package
 
-1. **Download and unzip this folder from: https://doi.org/10.5281/zenodo.15449510**
-2. unzip MarsSim.zip -d app/
-3. Open **Command Prompt** in the folder
-4. Run:
-
-```bat
-run_docker.bat
-```
-
-This will:
-- Load the Docker image from `designate-gui.tar`
-- Start the GUI
-- Launch and control the simulator from inside the tool
+Download the tool from Zenodo.
 
 ---
 
-## 🧩 Option 2: Run Without Docker (Manual Setup)
+### 2. 🛠️ Create and activate a new Python 3.10 virtual environment
 
-### ⚠️ This requires Python 3.7 and a compatible GPU
-
-### 1. Set up a virtual environment
+Open Command Prompt and run:
 
 ```bash
-python3.7 -m venv venv
-venv\Scripts\activate   # On Windows
+# Create a new virtual environment with Python 3.10
+python -m venv venv_py310
+
+# Activate the environment
+venv_py310\Scripts\activate
+
+# Upgrade pip to ensure compatibility
+python -m pip install --upgrade pip
+
+# Upgrade pip to ensure compatibility
+python -m pip install -r requirements.txt --extra-index-url https://download.pytorch.org/whl/cu113
+
+# Install AirSim manually
+cd DESIGNATE_Tool_PY3.10\AirSim\PythonClient
+python setup.py install
+
+# Launch the GUI tool
+cd ../../
+python .\app\run.py
 ```
 
-### 2. Install the dependencies
+Make sure python and pip versions are both 3.10
 
-```bash
-pip install --upgrade pip
 
-# Pre-install to avoid AirSim setup crash
-pip install numpy==1.21.6 msgpack-rpc-python==0.4.1
+## 📌 Limitations
 
-# Install PyTorch with CUDA 11.3
-pip install torch==1.10.0+cu113 torchvision==0.11.1+cu113 torchaudio==0.10.0+cu113 -f https://download.pytorch.org/whl/cu113/torch_stable.html
-
-# Then the rest
-pip install -r requirements.txt
-```
-
-### 3. Run the tool
-Download: https://doi.org/10.5281/zenodo.15491076
-unzip MarsSim.zip -d app/
-```bash
-python app/run.py
-```
-
-The GUI will open. 
-
-## 📁 Folder Contents
-
-- `designate-gui.tar` → Prebuilt Docker image
-- `MarsSim/` → Unreal engine-based simulator
-- `run_docker.bat` → Launches the Docker-based tool
-- `requirements.txt` → For manual setup
-- `app/` → Source code, GUI, models, simulator launcher
-- `README.md` → This file
+- ❌ Not supported on Linux/macOS (due to `Mars.exe` dependency)
+- ❌ Requires discrete GPU (NVIDIA CUDA support)
+- ❌ Simulator must be manually recompiled for non-Windows targets (if needed)
 
 ---
-
-
-## ⚠️ Notes
-
-- This tool only works on **Windows** (due to the Unreal simulator)
-- Manual installation requires **Python 3.7**
-- The simulator is launched **internally by the GUI**
-
 
 ## 📧 Contact
 

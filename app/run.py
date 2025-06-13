@@ -4,16 +4,20 @@ import threading
 import time
 import subprocess
 import importlib
+import shutil
+import psutil
+
 from PyQt5.QtWidgets import (
-    QApplication, QWidget, QPushButton, QLabel, QVBoxLayout, QHBoxLayout, QFrame, QComboBox, QLineEdit, QGroupBox
+    QApplication, QWidget, QPushButton, QLabel, QVBoxLayout,
+    QHBoxLayout, QFrame, QComboBox, QLineEdit, QGroupBox
 )
 from PyQt5.QtGui import QPixmap, QFont
 from PyQt5.QtCore import Qt, QTimer, QFileSystemWatcher
+
 import win32gui
 import win32con
 import atexit
-import psutil
-import shutil
+
 SEARCH_ALGORITHMS = {
     "DESIGNATE": "search2_feat_mars",
     "DESIGNATE_SINGLE": "search1_mars",
